@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-creato-display), system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-creato-display), system-ui, -apple-system, sans-serif;
+  --font-body: var(--font-creato-display), system-ui, -apple-system, sans-serif;
+
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(222.2 84% 4.9%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222.2 84% 4.9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(222.2 84% 4.9%);
+  --color-primary: #1A377B;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: hsl(210 40% 96.1%);
+  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+  --color-muted: hsl(210 40% 96.1%);
+  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
+  --color-accent: hsl(210 40% 96.1%);
+  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-input: hsl(214.3 31.8% 91.4%);
+  --color-ring: hsl(221 63% 29%);
+  --radius: 0.5rem;
+
+  /* Custom properties for Guards page */
+  --main-text-body: #494949;
+  --main-text-disabled: #A4A4A4;
+  --main-icon-color: #172E65;
+  --main-screen-bg: #FDFDFD;
+  --main-white: #FDFDFD;
+  --primary-50: #E8EBF2;
+  --primary-500: #1A377B;
+  --neutral-50: #F4F4F4;
+  --neutral-100: #E8E8E8;
+  --button-color-primary-btn: #1A377B;
+  --button-color-secondary-btn: #1A377B;
+
+  /* Font sizes */
+  --font-size-h6: 24px;
+  --font-size-body-two: 14px;
+  --font-size-caption-one: 14px;
+
+  /* Line heights */
+  --line-height-xs: 1.2;
+  --line-height-xxs-2: 1.2;
+  --line-height-xxs-3: 1.2;
+
+  /* Kerning */
+  --kerning-md: 0;
+  --kerning-lg: 0.02em;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-creato-display), system-ui, -apple-system, sans-serif;
+}
