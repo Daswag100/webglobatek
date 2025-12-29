@@ -1,0 +1,244 @@
+.headerContent {
+    padding: 32px 40px 0 40px;
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 400;
+    color: #494949;
+    margin-bottom: 16px;
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 12px;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: #A4A4A4;
+    transition: all 0.2s ease;
+    height: 34px;
+}
+
+.tab:hover {
+    background: #F9FAFB;
+}
+
+.tabActive {
+    background: #E8EBF2;
+    color: #172E65;
+    border-color: #172E65;
+    font-weight: 700;
+}
+
+.tabActiveEmergency {
+    background: #E8EBF2;
+    color: #172E65;
+    border-color: #172E65;
+    font-weight: 700;
+}
+
+/* Search Bar */
+.searchBar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.searchInput {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    background: #F4F4F4;
+    border: none;
+    border-bottom: 1.5px solid #E8E8E8;
+    border-radius: 8px;
+    width: 343px;
+    height: 48px;
+}
+
+.searchInput input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #1A1A1A;
+    background: transparent;
+}
+
+.searchInput input::placeholder {
+    color: #9CA3AF;
+}
+
+.filterButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.filterButton:hover {
+    opacity: 0.7;
+}
+
+/* Main Content */
+.mainContent {
+    padding: 24px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Filter Buttons */
+.filterButtons {
+    display: flex;
+    gap: 12px;
+}
+
+.filterBtn {
+    padding: 4px 16px;
+    background: #FFFFFF;
+    border: 0.5px solid #E8E8E8;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #A4A4A4;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 26px;
+    display: flex;
+    align-items: center;
+}
+
+.filterBtn:hover {
+    background: #F9FAFB;
+}
+
+.filterBtnActive {
+    background: #E8EBF2;
+    color: #172E65;
+    border: 0.5px solid #172E65;
+    font-weight: 700;
+}
+
+.filterBtnActive:hover {
+    background: #E8EBF2;
+    color: #172E65;
+}
+
+/* Empty State Wrapper */
+.emptyStateWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 800px;
+}
+
+/* Empty State Container */
+.emptyStateContainer {
+    background: #FDFDFD;
+    border: 1px solid #E8E8E8;
+    border-radius: 12px;
+    padding: 16px;
+    width: 100%;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Empty State */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.emptyTitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: #A4A4A4;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.emptySubtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: #A4A4A4;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 24px 0;
+}
+
+.paginationArrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 36px;
+    padding: 10px 16px;
+    background: #FFFFFF;
+    border: 1.5px solid #1A377B;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.paginationArrow:hover:not(:disabled) {
+    background: #F9FAFB;
+}
+
+.paginationArrow:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginationNumberActive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    background: #1A377B;
+    color: #FFFFFF;
+    border: 2px solid #1A377B;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}

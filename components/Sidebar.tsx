@@ -88,7 +88,7 @@ export default function Sidebar() {
                                     width={24}
                                     height={24}
                                     style={{
-                                        filter: isActive && item.id !== 'assignments' ? 'brightness(0) invert(1)' : 'none',
+                                        filter: isActive && item.id !== 'assignments' && item.id !== 'inbox' ? 'brightness(0) invert(1)' : 'none',
                                     }}
                                 />
                             </div>

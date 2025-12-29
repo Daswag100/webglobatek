@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Colors } from '@/constants/Colors';
 import { completedAssignmentsData } from '@/data/completedAssignmentsData';
 import { activeAssignmentData } from '@/data/activeAssignmentData';
+import { upcomingAssignmentsData } from '@/data/upcomingAssignmentsData';
 import CheckInsTimeline from '@/components/dashboard/CheckInsTimeline';
 import styles from './view-assignment.module.css';
 
@@ -27,11 +28,19 @@ export default function ViewAssignmentPage() {
     const isActive = assignmentId === 'a1';
     const activeAssignment = isActive ? activeAssignmentData : null;
 
+    // Check if this is an upcoming assignment
+    const upcomingAssignment = upcomingAssignmentsData[assignmentId];
+    const isUpcoming = !!upcomingAssignment;
+
     // Set initial guard based on URL parameter
     useEffect(() => {
         if (guardParam && (completedAssignment || activeAssignment)) {
             const guards = completedAssignment?.guards || activeAssignment?.guards || [];
-            const guardIndex = guards.findIndex(g => g.id === guardParam || g.guardId === guardParam);
+            const guardIndex = guards.findIndex(g => {
+                // Active guards have 'id', completed guards have 'guardId'
+                const guardIdentifier = 'id' in g ? g.id : g.guardId;
+                return guardIdentifier === guardParam || g.guardId === guardParam;
+            });
             if (guardIndex !== -1) {
                 setSelectedGuardIndex(guardIndex);
             }
@@ -479,6 +488,144 @@ export default function ViewAssignmentPage() {
                                 <span className={styles.infoLabel}>Assigned Duties</span>
                                 <ul className={styles.dutiesList}>
                                     {completedAssignment.duties.map((duty, index) => (
+                                        <li key={index} className={styles.dutyItem}>{duty}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Render upcoming assignment view
+    if (isUpcoming) {
+        const selectedGuard = upcomingAssignment.guards[selectedGuardIndex];
+
+        return (
+            <div
+                style={{
+                    marginLeft: '110px',
+                    backgroundColor: Colors.screenBg,
+                    minHeight: '100vh',
+                }}
+            >
+                {/* Header */}
+                <div className={styles.header}>
+                    <div className={styles.headerLeft}>
+                        <button onClick={handleBack} className={styles.backButton}>
+                            <Image
+                                src="/assets/images/back.png"
+                                alt="Back"
+                                width={24}
+                                height={24}
+                            />
+                        </button>
+                        <h1 className={styles.headerTitle}>{upcomingAssignment.title}</h1>
+                    </div>
+                </div>
+
+                {/* Main Content */}
+                <div className={styles.upcomingContainer}>
+                    {/* Guard Tabs */}
+                    <div className={styles.guardTabs}>
+                        {upcomingAssignment.guards.map((guard, index) => (
+                            <button
+                                key={guard.guardId}
+                                className={`${styles.guardTab} ${index === selectedGuardIndex ? styles.guardTabActive : ''}`}
+                                onClick={() => setSelectedGuardIndex(index)}
+                            >
+                                <Image
+                                    src={guard.guardAvatar}
+                                    alt={guard.guardName}
+                                    width={24}
+                                    height={24}
+                                    className={styles.guardTabAvatar}
+                                />
+                                <span>{guard.guardName}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Two Column Layout */}
+                    <div className={styles.upcomingContent}>
+                        {/* Left Column - Map */}
+                        <div className={styles.upcomingLeft}>
+                            <div className={styles.mapContainer}>
+                                <Image
+                                    src={upcomingAssignment.mapImage}
+                                    alt="Map"
+                                    width={300}
+                                    height={300}
+                                    className={styles.mapImage}
+                                />
+                                <a href="#" className={styles.viewOnMaps}>
+                                    <Image
+                                        src="/assets/images/location.png"
+                                        alt="Location"
+                                        width={16}
+                                        height={16}
+                                    />
+                                    <span>View on Maps</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Right Column */}
+                        <div className={styles.upcomingRight}>
+                            {/* Assignment Time */}
+                            <div className={styles.infoCard}>
+                                <span className={styles.infoLabel}>Assignment Time</span>
+                                <span className={styles.infoValue}>
+                                    {upcomingAssignment.startTime} - {upcomingAssignment.endTime}
+                                </span>
+                            </div>
+
+                            {/* Guard Details */}
+                            <div className={styles.infoCard}>
+                                <span className={styles.infoLabel}>Guard Details</span>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailValue}>{selectedGuard.guardEmail}</span>
+                                    <button onClick={() => handleCopy(selectedGuard.guardEmail)} className={styles.copyButton}>
+                                        <Image src="/assets/images/copy.png" alt="Copy" width={16} height={16} />
+                                    </button>
+                                </div>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailValue}>{selectedGuard.guardPhone}</span>
+                                    <button onClick={() => handleCopy(selectedGuard.guardPhone)} className={styles.copyButton}>
+                                        <Image src="/assets/images/copy.png" alt="Copy" width={16} height={16} />
+                                    </button>
+                                </div>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailValue}>{selectedGuard.guardIdNumber}</span>
+                                    <button onClick={() => handleCopy(selectedGuard.guardIdNumber)} className={styles.copyButton}>
+                                        <Image src="/assets/images/copy.png" alt="Copy" width={16} height={16} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Client Information */}
+                            <div className={styles.infoCard}>
+                                <span className={styles.infoLabel}>Client Name</span>
+                                <span className={styles.infoValue}>{upcomingAssignment.clientName}</span>
+                            </div>
+
+                            <div className={styles.infoCard}>
+                                <span className={styles.infoLabel}>Contact</span>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailValue}>{upcomingAssignment.clientContact}</span>
+                                    <button onClick={() => handleCopy(upcomingAssignment.clientContact)} className={styles.copyButton}>
+                                        <Image src="/assets/images/copy.png" alt="Copy" width={16} height={16} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Assigned Duties */}
+                            <div className={styles.infoCard}>
+                                <span className={styles.infoLabel}>Assigned Duties</span>
+                                <ul className={styles.dutiesList}>
+                                    {upcomingAssignment.duties.map((duty, index) => (
                                         <li key={index} className={styles.dutyItem}>{duty}</li>
                                     ))}
                                 </ul>
