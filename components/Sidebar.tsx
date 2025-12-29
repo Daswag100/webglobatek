@@ -56,7 +56,13 @@ export default function Sidebar() {
             {/* Navigation Items */}
             <nav className="flex flex-col items-center gap-4 px-4">
                 {navItems.map((item) => {
-                    const isActive = mounted && pathname === item.path
+                    // Check if current path matches or starts with the item path
+                    // Special handling for logout to only match exact path
+                    const isActive = mounted && (
+                        item.id === 'logout'
+                            ? pathname === item.path
+                            : pathname.startsWith(item.path)
+                    )
 
                     return (
                         <button
@@ -82,7 +88,7 @@ export default function Sidebar() {
                                     width={24}
                                     height={24}
                                     style={{
-                                        filter: isActive ? 'brightness(0) invert(1)' : 'none',
+                                        filter: isActive && item.id !== 'assignments' ? 'brightness(0) invert(1)' : 'none',
                                     }}
                                 />
                             </div>

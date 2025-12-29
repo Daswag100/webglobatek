@@ -1,0 +1,122 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal {
+    background: var(--main-white, #FDFDFD);
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon */
+.iconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid var(--neutral-100, #E8E8E8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--main-white, #FDFDFD);
+}
+
+.minusSign {
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--main-text-disabled, #A4A4A4);
+    line-height: 1;
+}
+
+/* Content */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    color: var(--main-text-body, #494949);
+    margin: 0;
+    max-width: 360px;
+}
+
+.subtitle {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--main-text-disabled, #A4A4A4);
+    margin: 0;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+}
+
+.cancelButton,
+.deactivateButton {
+    flex: 1;
+    height: 56px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.cancelButton {
+    background: transparent;
+    border: 2px solid var(--button-color-secondary-btn, #1A377B);
+    color: var(--button-color-secondary-btn, #1A377B);
+}
+
+.cancelButton:hover {
+    background: var(--primary-50, #E8EBF2);
+}
+
+.deactivateButton {
+    background: #DC2626;
+    color: var(--main-white, #FDFDFD);
+}
+
+.deactivateButton:hover {
+    background: #B91C1C;
+}

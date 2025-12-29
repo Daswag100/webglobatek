@@ -1,24 +1,107 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Colors } from '@/constants/Colors';
 import styles from './guards.module.css';
+import { Guard, mockGuardsData } from '@/data/mockGuardsData';
+import GuardListItem from '@/components/guards/GuardListItem';
+import DeactivateGuardModal from '@/components/guards/DeactivateGuardModal';
 
 type GuardStatus = 'active' | 'inactive' | 'pending';
 
 export default function GuardsPage() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [activeTab, setActiveTab] = useState<GuardStatus>('active');
     const [searchQuery, setSearchQuery] = useState('');
+    const [guards, setGuards] = useState<Guard[]>(mockGuardsData);
+    const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+    const [selectedGuard, setSelectedGuard] = useState<Guard | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const guardsPerPage = 6;
 
-    // Mock data - empty for now to show empty state
-    const guards = {
-        active: [],
-        inactive: [],
-        pending: []
+    // Check for new guard from localStorage
+    useEffect(() => {
+        const tab = searchParams.get('tab');
+        const isNew = searchParams.get('new');
+
+        if (isNew === 'true') {
+            const newGuardsData = localStorage.getItem('newGuards');
+            if (newGuardsData) {
+                const newGuards = JSON.parse(newGuardsData);
+                // Add all new guards to the list
+                setGuards(prev => [...prev, ...newGuards]);
+                // Clear localStorage after adding
+                localStorage.removeItem('newGuards');
+            }
+        }
+
+        if (tab === 'pending') {
+            setActiveTab('pending');
+        }
+    }, [searchParams]);
+
+    // Filter guards by active tab
+    const filteredGuards = guards.filter(guard => guard.status === activeTab);
+
+    // Calculate pagination
+    const totalPages = Math.max(1, Math.ceil(filteredGuards.length / guardsPerPage));
+    const startIndex = (currentPage - 1) * guardsPerPage;
+    const endIndex = startIndex + guardsPerPage;
+    const currentGuards = filteredGuards.slice(startIndex, endIndex);
+
+    // Reset to page 1 when changing tabs
+    const handleTabChange = (tab: GuardStatus) => {
+        setActiveTab(tab);
+        setCurrentPage(1);
     };
 
-    const currentGuards = guards[activeTab];
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleDeactivate = (guardId: string) => {
+        const guard = guards.find(g => g.id === guardId);
+        if (guard) {
+            setSelectedGuard(guard);
+            setShowDeactivateModal(true);
+        }
+    };
+
+    const handleConfirmDeactivate = () => {
+        if (selectedGuard) {
+            setGuards(guards.map(g =>
+                g.id === selectedGuard.id
+                    ? { ...g, status: 'inactive' as const, deactivatedAt: new Date() }
+                    : g
+            ));
+        }
+        setShowDeactivateModal(false);
+        setSelectedGuard(null);
+    };
+
+    const handleActivate = (guardId: string) => {
+        setGuards(guards.map(g =>
+            g.id === guardId
+                ? { ...g, status: 'active' as const, activatedAt: new Date(), deactivatedAt: undefined }
+                : g
+        ));
+    };
+
+    const handleViewProfile = (guardId: string) => {
+        console.log('View profile for guard:', guardId);
+        // TODO: Navigate to guard profile page
+    };
 
     return (
         <div
@@ -44,7 +127,7 @@ export default function GuardsPage() {
                         <div className={styles.tabs}>
                             <button
                                 className={`${styles.tab} ${activeTab === 'active' ? styles.tabActive : ''}`}
-                                onClick={() => setActiveTab('active')}
+                                onClick={() => handleTabChange('active')}
                             >
                                 <Image
                                     src="/assets/images/flash.png"
@@ -57,7 +140,7 @@ export default function GuardsPage() {
 
                             <button
                                 className={`${styles.tab} ${activeTab === 'inactive' ? styles.tabActive : ''}`}
-                                onClick={() => setActiveTab('inactive')}
+                                onClick={() => handleTabChange('inactive')}
                             >
                                 <Image
                                     src="/assets/images/inactive.png"
@@ -70,7 +153,7 @@ export default function GuardsPage() {
 
                             <button
                                 className={`${styles.tab} ${activeTab === 'pending' ? styles.tabActive : ''}`}
-                                onClick={() => setActiveTab('pending')}
+                                onClick={() => handleTabChange('pending')}
                             >
                                 <Image
                                     src="/assets/images/pending.png"
@@ -129,14 +212,25 @@ export default function GuardsPage() {
                             </div>
                         ) : (
                             <div className={styles.guardsList}>
-                                {/* Guards list will go here when we have data */}
+                                {currentGuards.map((guard) => (
+                                    <GuardListItem
+                                        key={guard.id}
+                                        guard={guard}
+                                        onDeactivate={handleDeactivate}
+                                        onActivate={handleActivate}
+                                        onViewProfile={handleViewProfile}
+                                    />
+                                ))}
                             </div>
                         )}
                     </div>
 
                     {/* New Guard Button Section */}
                     <div className={styles.newGuardSection}>
-                        <button className={styles.newGuardButton}>
+                        <button
+                            className={styles.newGuardButton}
+                            onClick={() => router.push('/guards/new-guard')}
+                        >
                             <Image
                                 src="/assets/images/add.png"
                                 alt="Add"
@@ -148,10 +242,14 @@ export default function GuardsPage() {
                     </div>
                 </div>
 
-                {/* Pagination */}
+                {/* Pagination - Below mainRow */}
                 <div className={styles.pagination}>
-                    <button className={styles.paginationArrow}>
-                        <Image
+                    <button
+                        className={styles.paginationArrow}
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 1}
+                    >
+                        <img
                             src="/assets/images/back.png"
                             alt="Previous"
                             width={20}
@@ -160,11 +258,15 @@ export default function GuardsPage() {
                     </button>
 
                     <button className={styles.paginationNumber}>
-                        1
+                        {currentPage}
                     </button>
 
-                    <button className={styles.paginationArrow}>
-                        <Image
+                    <button
+                        className={styles.paginationArrow}
+                        onClick={handleNextPage}
+                        disabled={currentPage >= totalPages}
+                    >
+                        <img
                             src="/assets/images/bluenext.png"
                             alt="Next"
                             width={20}
@@ -173,6 +275,20 @@ export default function GuardsPage() {
                     </button>
                 </div>
             </div>
-        </div>
+
+            {/* Deactivate Guard Modal */}
+            {
+                showDeactivateModal && selectedGuard && (
+                    <DeactivateGuardModal
+                        guardName={selectedGuard.name}
+                        onConfirm={handleConfirmDeactivate}
+                        onCancel={() => {
+                            setShowDeactivateModal(false);
+                            setSelectedGuard(null);
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 }

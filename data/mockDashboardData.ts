@@ -48,8 +48,8 @@ export const mockHistoryAssignments: Assignment[] = [
         location: 'Maplewood Estate',
         address: '12400 Cedar Rd, Cleveland, OH 44106',
         guards: [mockGuards[0], mockGuards[1], mockGuards[2], mockGuards[3]], // All have images
-        startTime: new Date('2025-10-23T19:00:00'),
-        endTime: new Date('2025-10-24T03:00:00'),
+        startTime: new Date('2025-01-25T19:00:00'),
+        endTime: new Date('2025-01-26T03:00:00'),
         status: 'completed',
     },
     {
@@ -58,8 +58,8 @@ export const mockHistoryAssignments: Assignment[] = [
         location: 'Maplewood Estate',
         address: '12400 Cedar Rd, Cleveland, OH 44106',
         guards: [mockGuards[1], mockGuards[2], mockGuards[3], mockGuards[4]], // All have images
-        startTime: new Date('2025-10-23T19:00:00'),
-        endTime: new Date('2025-10-24T03:00:00'),
+        startTime: new Date('2025-01-25T19:00:00'),
+        endTime: new Date('2025-01-26T03:00:00'),
         status: 'completed',
     },
     {
@@ -68,8 +68,8 @@ export const mockHistoryAssignments: Assignment[] = [
         location: 'Maplewood Estate',
         address: '12400 Cedar Rd, Cleveland, OH 44106',
         guards: [mockGuards[1], mockGuards[2], mockGuards[3], mockGuards[4]],
-        startTime: new Date('2025-10-23T19:00:00'),
-        endTime: new Date('2025-10-24T03:00:00'),
+        startTime: new Date('2025-01-25T19:00:00'),
+        endTime: new Date('2025-01-26T03:00:00'),
         status: 'completed',
     },
 ]

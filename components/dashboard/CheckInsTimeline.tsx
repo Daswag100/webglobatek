@@ -12,8 +12,6 @@ export default function CheckInsTimeline({
     completedCheckIns,
     totalCheckIns
 }: CheckInsTimelineProps) {
-    const progressPercentage = (completedCheckIns / totalCheckIns) * 100
-
     return (
         <div
             style={{
@@ -22,7 +20,7 @@ export default function CheckInsTimeline({
                 gap: '16px',
             }}
         >
-            {/* Header with Check-Ins counter */}
+            {/* Header with Check-Ins counter - Separate and smaller */}
             <div
                 style={{
                     display: 'flex',
@@ -34,8 +32,10 @@ export default function CheckInsTimeline({
                     style={{
                         fontFamily: 'var(--font-body)',
                         fontWeight: 400,
-                        fontSize: '14px',
-                        color: '#6B7280',
+                        fontSize: '16px',
+                        lineHeight: '1.2',
+                        letterSpacing: '0.01em',
+                        color: 'var(--main-text-body, #494949)',
                     }}
                 >
                     Check-Ins
@@ -43,22 +43,33 @@ export default function CheckInsTimeline({
                 <span
                     style={{
                         fontFamily: 'var(--font-body)',
-                        fontWeight: 600,
+                        fontWeight: 700,
                         fontSize: '14px',
-                        color: '#111827',
+                        lineHeight: '1.2',
+                        letterSpacing: '0.02em',
+                        textAlign: 'center',
+                        color: 'var(--main-white, #FDFDFD)',
+                        background: 'var(--main-icon-color, #172E65)',
+                        padding: '8px 18px',
+                        borderRadius: '8px',
                     }}
                 >
                     {completedCheckIns}/{totalCheckIns}
                 </span>
             </div>
 
-            {/* Timeline items */}
+            {/* Timeline items container - Separate white box with shadow */}
             <div
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '24px',
-                    position: 'relative',
+                    gap: '0px',
+                    padding: '24px',
+                    background: '#FFFFFF',
+                    border: '1px solid var(--neutral-50, #F4F4F4)',
+                    borderRadius: '12px',
+                    boxShadow: '0px 1px 8px 0px rgba(0, 0, 0, 0.08)',
+                    width: '100%',
                 }}
             >
                 {checkIns.map((item, index) => (
@@ -66,7 +77,6 @@ export default function CheckInsTimeline({
                         key={item.id}
                         item={item}
                         isLast={index === checkIns.length - 1}
-                        progressPercentage={progressPercentage}
                     />
                 ))}
             </div>
@@ -77,10 +87,9 @@ export default function CheckInsTimeline({
 interface TimelineItemProps {
     item: CheckInItem
     isLast: boolean
-    progressPercentage: number
 }
 
-function TimelineItem({ item, isLast, progressPercentage }: TimelineItemProps) {
+function TimelineItem({ item, isLast }: TimelineItemProps) {
     const isActive = item.status === 'active' || item.status === 'completed'
     const isCompleted = item.status === 'completed'
 
@@ -88,85 +97,63 @@ function TimelineItem({ item, isLast, progressPercentage }: TimelineItemProps) {
         <div
             style={{
                 display: 'flex',
-                gap: '12px',
+                gap: '16px',
                 position: 'relative',
+                alignItems: 'flex-start',
+                paddingBottom: isLast ? '0' : '16px',
             }}
         >
-            {/* Circle indicator */}
+            {/* Circle indicator with vertical line */}
             <div
                 style={{
                     position: 'relative',
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
                     flexShrink: 0,
                 }}
             >
-                {/* Animated pulsing circle for active status */}
-                {item.status === 'completed' && item.type === 'clock-in' && (
-                    <>
-                        <div
-                            className="pulse-ring"
-                            style={{
-                                position: 'absolute',
-                                width: '40px',
-                                height: '40px',
-                                borderRadius: '50%',
-                                backgroundColor: '#3B82F6',
-                                opacity: 0.3,
-                                animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                            }}
-                        />
-                        <div
-                            style={{
-                                width: '24px',
-                                height: '24px',
-                                borderRadius: '50%',
-                                backgroundColor: '#3B82F6',
-                                border: '3px solid #DBEAFE',
-                                zIndex: 1,
-                            }}
-                        />
-                    </>
-                )}
-
-                {/* Regular circle for other states */}
-                {!(item.status === 'completed' && item.type === 'clock-in') && (
-                    <div
-                        style={{
-                            width: '24px',
-                            height: '24px',
-                            borderRadius: '50%',
-                            backgroundColor: isCompleted ? '#3B82F6' : '#E5E7EB',
-                            border: `3px solid ${isCompleted ? '#DBEAFE' : '#F3F4F6'}`,
-                        }}
-                    />
-                )}
-
-                {/* Vertical line connecting to next item */}
-                {!isLast && (
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: '30px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: '3px',
-                            height: '48px',
-                            backgroundColor: '#E5E7EB',
-                            overflow: 'hidden',
-                        }}
-                    >
-                        {/* Progress fill */}
+                {/* Outer circle with border */}
+                <div
+                    style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        border: '1px solid var(--primary-500, #1A377B)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'transparent',
+                        flexShrink: 0,
+                        padding: '4px',
+                    }}
+                >
+                    {/* Inner filled circle for completed items */}
+                    {isCompleted && (
                         <div
                             style={{
                                 width: '100%',
-                                height: `${progressPercentage}%`,
-                                backgroundColor: '#3B82F6',
-                                transition: 'height 0.3s ease',
+                                height: '100%',
+                                borderRadius: '50%',
+                                background: 'var(--primary-200, #A3AFCA)',
                             }}
                         />
-                    </div>
+                    )}
+                </div>
+
+                {/* Vertical line connecting to next item - longer and more visible */}
+                {!isLast && (
+                    <div
+                        style={{
+                            width: '4px',
+                            height: '48px',
+                            borderRadius: '2px',
+                            background: isCompleted
+                                ? 'var(--main-icon-color, #172E65)'
+                                : 'var(--neutral-200, #D1D1D1)',
+                            marginTop: '4px',
+                        }}
+                    />
                 )}
             </div>
 
@@ -176,15 +163,23 @@ function TimelineItem({ item, isLast, progressPercentage }: TimelineItemProps) {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
-                    paddingTop: '2px',
+                    flex: 1,
+                    paddingTop: '4px',
+                    ...(isCompleted && {
+                        background: 'var(--neutral-50, #F4F4F4)',
+                        borderRadius: '12px',
+                        padding: '12px 16px',
+                    }),
                 }}
             >
                 <span
                     style={{
                         fontFamily: 'var(--font-body)',
                         fontWeight: 600,
-                        fontSize: '14px',
-                        color: isActive ? '#111827' : '#9CA3AF',
+                        fontSize: '15px',
+                        lineHeight: '1.3',
+                        letterSpacing: '0.01em',
+                        color: isActive ? 'var(--main-icon-color, #172E65)' : '#9CA3AF',
                     }}
                 >
                     {item.label}
@@ -194,25 +189,14 @@ function TimelineItem({ item, isLast, progressPercentage }: TimelineItemProps) {
                         fontFamily: 'var(--font-body)',
                         fontWeight: 400,
                         fontSize: '13px',
-                        color: '#6B7280',
+                        lineHeight: '1.4',
+                        letterSpacing: '0.01em',
+                        color: isActive ? 'var(--main-text-body, #494949)' : '#9CA3AF',
                     }}
                 >
                     {item.time || item.timeRange}
                 </span>
             </div>
-
-            <style jsx>{`
-                @keyframes pulse {
-                    0%, 100% {
-                        transform: scale(1);
-                        opacity: 0.3;
-                    }
-                    50% {
-                        transform: scale(1.2);
-                        opacity: 0.1;
-                    }
-                }
-            `}</style>
         </div>
     )
 }

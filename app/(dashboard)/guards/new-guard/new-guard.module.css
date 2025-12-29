@@ -1,0 +1,142 @@
+/* Container */
+.container {
+    padding: 32px 32px 32px 140px;
+    min-height: calc(100vh - 140px);
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.backButton {
+    width: 52px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px var(--button-padding-sm, 12px);
+    background: transparent;
+    border: 1.5px solid var(--button-color-secondary-btn, #1A377B);
+    border-radius: var(--button-radius-sm, 6px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.backButton:hover {
+    background: var(--neutral-50, #F4F4F4);
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: var(--font-size-h6, 24px);
+    line-height: var(--line-height-xs, 1.2);
+    letter-spacing: var(--kerning-md, 0);
+    color: var(--main-text-body, #494949);
+    margin: 0;
+}
+
+/* Form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 730px;
+}
+
+.formRow {
+    display: flex;
+    gap: 24px;
+}
+
+.formGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--font-size-caption-one, 14px);
+    line-height: var(--line-height-xxs-3, 1.2);
+    letter-spacing: var(--kerning-lg, 0.02em);
+    color: var(--main-text-body, #494949);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.required {
+    margin-left: 0px;
+    vertical-align: super;
+    position: relative;
+    top: -2px;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 343px;
+    height: 48px;
+    padding: 0 16px;
+    gap: 8px;
+    border-radius: 8px;
+    background: var(--neutral-50, #F4F4F4);
+    border-bottom: 1.5px solid var(--neutral-100, #E8E8E8);
+}
+
+.inputIcon {
+    flex-shrink: 0;
+}
+
+.input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--font-size-body-two, 14px);
+    line-height: var(--line-height-xxs-2, 1.2);
+    letter-spacing: var(--kerning-lg, 0.02em);
+    color: var(--main-text-body, #494949);
+}
+
+.input::placeholder {
+    color: var(--main-text-disabled, #A4A4A4);
+}
+
+/* Confirm Button */
+.confirmButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 155px;
+    height: 48px;
+    padding: 10px var(--button-padding-md, 20px);
+    border-radius: var(--button-radius-md, 12px);
+    background: var(--button-color-primary-btn, #1A377B);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: var(--font-size-body-two, 14px);
+    line-height: var(--line-height-xxs-2, 1.2);
+    letter-spacing: var(--kerning-lg, 0.02em);
+    color: var(--main-white, #FDFDFD);
+    margin-top: 8px;
+}
+
+.confirmButton:hover {
+    opacity: 0.9;
+}

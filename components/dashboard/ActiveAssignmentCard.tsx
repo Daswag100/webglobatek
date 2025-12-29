@@ -71,7 +71,7 @@ export default function ActiveAssignmentCard({ assignment }: ActiveAssignmentCar
                     {assignment.guards.map((guard) => (
                         <Link
                             key={guard.id}
-                            href={`/assignments/${assignment.id}?guard=${guard.id}`}
+                            href={`/dashboard/active?guard=${guard.id}`}
                             style={{ textDecoration: 'none' }}
                         >
                             <GuardProfile guard={guard} />
