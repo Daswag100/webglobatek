@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Colors } from '@/constants/Colors';
+import { emergencyMessagesData, getMessagesByStatus } from '@/data/emergencyMessagesData';
+import { EmergencyMessage } from '@/types/dashboard';
+import EmergencyMessageItem from '@/components/inbox/EmergencyMessageItem';
+import MessageDetailPanel from '@/components/inbox/MessageDetailPanel';
 import styles from './inbox.module.css';
 
 type InboxTab = 'emergency' | 'assignments' | 'requests';
@@ -12,6 +16,55 @@ export default function InboxPage() {
     const [activeTab, setActiveTab] = useState<InboxTab>('emergency');
     const [activeFilter, setActiveFilter] = useState<FilterType>('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedMessages, setSelectedMessages] = useState<string[]>([]);
+    const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
+    const [messages, setMessages] = useState<EmergencyMessage[]>(emergencyMessagesData);
+
+    // Filter messages based on active filter
+    const filteredMessages = getMessagesByStatus(activeFilter);
+
+    // Get active message
+    const activeMessage = activeMessageId
+        ? messages.find(m => m.id === activeMessageId) || null
+        : null;
+
+    const handleSelectMessage = (id: string) => {
+        setSelectedMessages(prev =>
+            prev.includes(id)
+                ? prev.filter(msgId => msgId !== id)
+                : [...prev, id]
+        );
+    };
+
+    const handleMessageClick = (id: string) => {
+        setActiveMessageId(id);
+    };
+
+    const handleMarkAsResolved = (id: string) => {
+        setMessages(prev => prev.map(msg =>
+            msg.id === id ? { ...msg, status: 'resolved' as const } : msg
+        ));
+    };
+
+    const handleMarkAsUnresolved = (id: string) => {
+        setMessages(prev => prev.map(msg =>
+            msg.id === id ? { ...msg, status: 'unresolved' as const } : msg
+        ));
+    };
+
+    const handleBulkMarkAsResolved = () => {
+        setMessages(prev => prev.map(msg =>
+            selectedMessages.includes(msg.id) ? { ...msg, status: 'resolved' as const } : msg
+        ));
+        setSelectedMessages([]);
+    };
+
+    const handleBulkMarkAsUnresolved = () => {
+        setMessages(prev => prev.map(msg =>
+            selectedMessages.includes(msg.id) ? { ...msg, status: 'unresolved' as const } : msg
+        ));
+        setSelectedMessages([]);
+    };
 
     return (
         <div
@@ -123,43 +176,84 @@ export default function InboxPage() {
                     </button>
                 </div>
 
-                {/* Empty State and Pagination Wrapper */}
-                <div className={styles.emptyStateWrapper}>
-                    {/* Empty State with Container */}
-                    <div className={styles.emptyStateContainer}>
-                        <div className={styles.emptyState}>
+                {/* Bulk Actions Bar */}
+                {selectedMessages.length > 0 && (
+                    <div className={styles.bulkActionsBar}>
+                        <span className={styles.markAsLabel}>Mark As:</span>
+                        <button
+                            className={styles.bulkResolvedButton}
+                            onClick={handleBulkMarkAsResolved}
+                        >
+                            Resolved
+                        </button>
+                        <button
+                            className={styles.bulkUnresolvedButton}
+                            onClick={handleBulkMarkAsUnresolved}
+                        >
+                            Unresolved
+                        </button>
+                        <button
+                            className={styles.clearSelectionButton}
+                            onClick={() => setSelectedMessages([])}
+                        >
                             <Image
-                                src="/assets/images/inbox.png"
-                                alt="No completed assignments"
-                                width={120}
-                                height={120}
+                                src="/assets/images/close.png"
+                                alt="Clear"
+                                width={16}
+                                height={16}
                             />
-                            <p className={styles.emptyTitle}>No Completed Assignments</p>
-                            <p className={styles.emptySubtitle}>Your completed assignments will appear here</p>
+                        </button>
+                    </div>
+                )}
+
+                {/* Two Column Layout */}
+                <div className={styles.contentLayout}>
+                    {/* Message List */}
+                    <div className={styles.messageListContainer}>
+                        <div className={styles.messageList}>
+                            {filteredMessages.map(message => (
+                                <EmergencyMessageItem
+                                    key={message.id}
+                                    message={message}
+                                    isSelected={selectedMessages.includes(message.id)}
+                                    isActive={activeMessageId === message.id}
+                                    onSelect={handleSelectMessage}
+                                    onClick={handleMessageClick}
+                                />
+                            ))}
+                        </div>
+
+                        {/* Pagination */}
+                        <div className={styles.pagination}>
+                            <button className={styles.paginationArrow}>
+                                <Image
+                                    src="/assets/images/back.png"
+                                    alt="Previous"
+                                    width={20}
+                                    height={20}
+                                />
+                            </button>
+
+                            <button className={styles.paginationNumberActive}>1</button>
+
+                            <button className={styles.paginationArrow}>
+                                <Image
+                                    src="/assets/images/bluenext.png"
+                                    alt="Next"
+                                    width={20}
+                                    height={20}
+                                />
+                            </button>
                         </div>
                     </div>
 
-                    {/* Pagination */}
-                    <div className={styles.pagination}>
-                        <button className={styles.paginationArrow}>
-                            <Image
-                                src="/assets/images/back.png"
-                                alt="Previous"
-                                width={20}
-                                height={20}
-                            />
-                        </button>
-
-                        <button className={styles.paginationNumberActive}>1</button>
-
-                        <button className={styles.paginationArrow}>
-                            <Image
-                                src="/assets/images/bluenext.png"
-                                alt="Next"
-                                width={20}
-                                height={20}
-                            />
-                        </button>
+                    {/* Message Detail Panel */}
+                    <div className={styles.detailPanelContainer}>
+                        <MessageDetailPanel
+                            message={activeMessage}
+                            onMarkAsResolved={handleMarkAsResolved}
+                            onMarkAsUnresolved={handleMarkAsUnresolved}
+                        />
                     </div>
                 </div>
             </div>

@@ -1,0 +1,111 @@
+.messageItem {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E8E8E8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.messageItemUnresolved {
+    background: #FEF6EA;
+}
+
+.messageItem:hover {
+    background: #F9FAFB;
+}
+
+.messageItemUnresolved:hover {
+    background: #FDF0DC;
+}
+
+.messageItemActive {
+    background: #EEF2FF !important;
+    border-left: 3px solid #1A377B;
+}
+
+.checkbox {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 4px;
+}
+
+.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #1A377B;
+}
+
+.avatar {
+    flex-shrink: 0;
+}
+
+.avatarImage {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.senderName {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+.ticketNumber {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #172E65;
+    flex-shrink: 0;
+}
+
+.preview {
+    font-size: 14px;
+    font-weight: 400;
+    color: #494949;
+    line-height: 1.5;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.footer {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.date {
+    font-size: 12px;
+    font-weight: 400;
+    color: #A4A4A4;
+}
+
+.time {
+    font-size: 12px;
+    font-weight: 400;
+    color: #A4A4A4;
+}

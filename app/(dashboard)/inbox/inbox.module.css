@@ -242,3 +242,97 @@
     font-weight: 500;
     cursor: pointer;
 }
+
+/* Content Layout */
+.contentLayout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
+    width: 100%;
+}
+
+.messageListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.messageList {
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 560px;
+}
+
+.detailPanelContainer {
+    height: fit-content;
+    min-height: 560px;
+}
+
+/* Bulk Actions Bar */
+.bulkActionsBar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: #F9FAFB;
+    border: 1px solid #E8E8E8;
+    border-radius: 8px;
+}
+
+.markAsLabel {
+    font-size: 14px;
+    font-weight: 400;
+    color: #494949;
+}
+
+.bulkResolvedButton {
+    padding: 6px 16px;
+    background: #172E65;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bulkResolvedButton:hover {
+    background: #0F1F47;
+}
+
+.bulkUnresolvedButton {
+    padding: 6px 16px;
+    background: #D4A017;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bulkUnresolvedButton:hover {
+    background: #B8890F;
+}
+
+.clearSelectionButton {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.clearSelectionButton:hover {
+    background: #E8E8E8;
+}

@@ -56,3 +56,20 @@ export interface AssignmentDetail extends Assignment {
     mapUrl?: string
     emergencyReports: any[]
 }
+
+export type MessageStatus = 'resolved' | 'unresolved'
+
+export interface EmergencyMessage {
+    id: string
+    ticketNumber: string
+    sender: {
+        name: string
+        avatar: string
+    }
+    messagePreview: string
+    messageContent: string
+    date: string
+    time: string
+    status: MessageStatus
+    timestamp: Date
+}
