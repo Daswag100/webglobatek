@@ -73,3 +73,34 @@ export interface EmergencyMessage {
     status: MessageStatus
     timestamp: Date
 }
+
+export interface AssignmentMessage {
+    id: string
+    ticketNumber: string
+    sender: {
+        name: string
+        avatar: string
+    }
+    messagePreview: string
+    messageContent: string
+    date: string
+    time: string
+    status: MessageStatus
+    timestamp: Date
+}
+
+export interface RequestMessage {
+    id: string
+    ticketNumber: string
+    sender: {
+        name: string
+        avatar: string
+    }
+    subject: string
+    messagePreview: string
+    messageContent: string
+    date: string
+    time: string
+    status: MessageStatus
+    timestamp: Date
+}

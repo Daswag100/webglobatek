@@ -15,6 +15,7 @@ interface NavItem {
 const navItems: NavItem[] = [
     { id: "dashboard", label: "Dashboard", icon: "/assets/images/dashboard.png", path: "/dashboard" },
     { id: "guards", label: "Guards", icon: "/assets/images/guard.png", path: "/guards" },
+    { id: "supervisors", label: "Supervisors", icon: "/assets/images/headset.png", path: "/supervisors" },
     { id: "assignments", label: "Assignments", icon: "/assets/images/assignments.png", path: "/assignments" },
     { id: "inbox", label: "Inbox", icon: "/assets/images/mailicon.png", path: "/inbox" },
     { id: "logout", label: "Logout", icon: "/assets/images/login.png", path: "/login" },
@@ -88,7 +89,7 @@ export default function Sidebar() {
                                     width={24}
                                     height={24}
                                     style={{
-                                        filter: isActive && item.id !== 'assignments' && item.id !== 'inbox' ? 'brightness(0) invert(1)' : 'none',
+                                        filter: isActive && item.id !== 'assignments' && item.id !== 'inbox' && item.id !== 'supervisors' ? 'brightness(0) invert(1)' : 'none',
                                     }}
                                 />
                             </div>

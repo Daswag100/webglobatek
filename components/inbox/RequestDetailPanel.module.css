@@ -1,0 +1,147 @@
+.panel {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.emptyState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.emptyText {
+    font-size: 16px;
+    font-weight: 500;
+    color: #A4A4A4;
+}
+
+.header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.senderInfo {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.avatar {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.senderDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.senderName {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0;
+}
+
+.ticketNumber {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #172E65;
+}
+
+.content {
+    flex: 1;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.subject {
+    font-size: 16px;
+    font-weight: 700;
+    color: #172E65;
+    margin: 0;
+}
+
+.messageText {
+    font-size: 14px;
+    font-weight: 400;
+    color: #494949;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.timestamp {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: auto;
+}
+
+.date {
+    font-size: 12px;
+    font-weight: 400;
+    color: #A4A4A4;
+}
+
+.time {
+    font-size: 12px;
+    font-weight: 400;
+    color: #A4A4A4;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #E8E8E8;
+}
+
+.markAsLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1A1A1A;
+}
+
+.resolvedButton {
+    padding: 10px 20px;
+    background: #1A377B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.resolvedButton:hover {
+    background: #152B63;
+}
+
+.unresolvedButton {
+    padding: 10px 20px;
+    background: #F59E0B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.unresolvedButton:hover {
+    background: #D97706;
+}

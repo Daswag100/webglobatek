@@ -3,10 +3,16 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Colors } from '@/constants/Colors';
-import { emergencyMessagesData, getMessagesByStatus } from '@/data/emergencyMessagesData';
-import { EmergencyMessage } from '@/types/dashboard';
+import { emergencyMessagesData } from '@/data/emergencyMessagesData';
+import { assignmentMessagesData } from '@/data/assignmentMessagesData';
+import { requestMessagesData } from '@/data/requestMessagesData';
+import { EmergencyMessage, AssignmentMessage, RequestMessage } from '@/types/dashboard';
 import EmergencyMessageItem from '@/components/inbox/EmergencyMessageItem';
+import AssignmentMessageItem from '@/components/inbox/AssignmentMessageItem';
+import RequestMessageItem from '@/components/inbox/RequestMessageItem';
 import MessageDetailPanel from '@/components/inbox/MessageDetailPanel';
+import AssignmentDetailPanel from '@/components/inbox/AssignmentDetailPanel';
+import RequestDetailPanel from '@/components/inbox/RequestDetailPanel';
 import styles from './inbox.module.css';
 
 type InboxTab = 'emergency' | 'assignments' | 'requests';
@@ -18,14 +24,25 @@ export default function InboxPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedMessages, setSelectedMessages] = useState<string[]>([]);
     const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
-    const [messages, setMessages] = useState<EmergencyMessage[]>(emergencyMessagesData);
+    const [emergencyMessages, setEmergencyMessages] = useState<EmergencyMessage[]>(emergencyMessagesData);
+    const [assignmentMessages, setAssignmentMessages] = useState<AssignmentMessage[]>(assignmentMessagesData);
+    const [requestMessages, setRequestMessages] = useState<RequestMessage[]>(requestMessagesData);
+
+    // Get current messages based on active tab
+    const currentMessages = activeTab === 'emergency'
+        ? emergencyMessages
+        : activeTab === 'assignments'
+            ? assignmentMessages
+            : requestMessages;
 
     // Filter messages based on active filter
-    const filteredMessages = getMessagesByStatus(activeFilter);
+    const filteredMessages = activeFilter === 'all'
+        ? currentMessages
+        : currentMessages.filter(msg => msg.status === activeFilter);
 
     // Get active message
     const activeMessage = activeMessageId
-        ? messages.find(m => m.id === activeMessageId) || null
+        ? currentMessages.find(m => m.id === activeMessageId) || null
         : null;
 
     const handleSelectMessage = (id: string) => {
@@ -41,29 +58,80 @@ export default function InboxPage() {
     };
 
     const handleMarkAsResolved = (id: string) => {
-        setMessages(prev => prev.map(msg =>
-            msg.id === id ? { ...msg, status: 'resolved' as const } : msg
-        ));
+        if (activeTab === 'emergency') {
+            setEmergencyMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, status: 'resolved' as const } : msg
+            ));
+        } else if (activeTab === 'assignments') {
+            setAssignmentMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, status: 'resolved' as const } : msg
+            ));
+        } else if (activeTab === 'requests') {
+            setRequestMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, status: 'resolved' as const } : msg
+            ));
+        }
+        // Clear selection after marking
+        setSelectedMessages(prev => prev.filter(msgId => msgId !== id));
     };
 
     const handleMarkAsUnresolved = (id: string) => {
-        setMessages(prev => prev.map(msg =>
-            msg.id === id ? { ...msg, status: 'unresolved' as const } : msg
-        ));
+        if (activeTab === 'emergency') {
+            setEmergencyMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, status: 'unresolved' as const } : msg
+            ));
+        } else if (activeTab === 'assignments') {
+            setAssignmentMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, status: 'unresolved' as const } : msg
+            ));
+        } else if (activeTab === 'requests') {
+            setRequestMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, status: 'unresolved' as const } : msg
+            ));
+        }
+        // Clear selection after marking
+        setSelectedMessages(prev => prev.filter(msgId => msgId !== id));
     };
 
     const handleBulkMarkAsResolved = () => {
-        setMessages(prev => prev.map(msg =>
-            selectedMessages.includes(msg.id) ? { ...msg, status: 'resolved' as const } : msg
-        ));
+        if (activeTab === 'emergency') {
+            setEmergencyMessages(prev => prev.map(msg =>
+                selectedMessages.includes(msg.id) ? { ...msg, status: 'resolved' as const } : msg
+            ));
+        } else if (activeTab === 'assignments') {
+            setAssignmentMessages(prev => prev.map(msg =>
+                selectedMessages.includes(msg.id) ? { ...msg, status: 'resolved' as const } : msg
+            ));
+        } else if (activeTab === 'requests') {
+            setRequestMessages(prev => prev.map(msg =>
+                selectedMessages.includes(msg.id) ? { ...msg, status: 'resolved' as const } : msg
+            ));
+        }
         setSelectedMessages([]);
     };
 
     const handleBulkMarkAsUnresolved = () => {
-        setMessages(prev => prev.map(msg =>
-            selectedMessages.includes(msg.id) ? { ...msg, status: 'unresolved' as const } : msg
-        ));
+        if (activeTab === 'emergency') {
+            setEmergencyMessages(prev => prev.map(msg =>
+                selectedMessages.includes(msg.id) ? { ...msg, status: 'unresolved' as const } : msg
+            ));
+        } else if (activeTab === 'assignments') {
+            setAssignmentMessages(prev => prev.map(msg =>
+                selectedMessages.includes(msg.id) ? { ...msg, status: 'unresolved' as const } : msg
+            ));
+        } else if (activeTab === 'requests') {
+            setRequestMessages(prev => prev.map(msg =>
+                selectedMessages.includes(msg.id) ? { ...msg, status: 'unresolved' as const } : msg
+            ));
+        }
         setSelectedMessages([]);
+    };
+
+    const handleTabChange = (tab: InboxTab) => {
+        setActiveTab(tab);
+        setSelectedMessages([]);
+        setActiveMessageId(null);
+        setActiveFilter('all');
     };
 
     return (
@@ -84,7 +152,7 @@ export default function InboxPage() {
                         <div className={styles.tabs}>
                             <button
                                 className={`${styles.tab} ${activeTab === 'emergency' ? styles.tabActiveEmergency : ''}`}
-                                onClick={() => setActiveTab('emergency')}
+                                onClick={() => handleTabChange('emergency')}
                             >
                                 <Image
                                     src="/assets/images/ambulance1.png"
@@ -97,7 +165,7 @@ export default function InboxPage() {
 
                             <button
                                 className={`${styles.tab} ${activeTab === 'assignments' ? styles.tabActive : ''}`}
-                                onClick={() => setActiveTab('assignments')}
+                                onClick={() => handleTabChange('assignments')}
                             >
                                 <Image
                                     src="/assets/images/assignments.png"
@@ -110,7 +178,7 @@ export default function InboxPage() {
 
                             <button
                                 className={`${styles.tab} ${activeTab === 'requests' ? styles.tabActive : ''}`}
-                                onClick={() => setActiveTab('requests')}
+                                onClick={() => handleTabChange('requests')}
                             >
                                 <Image
                                     src="/assets/images/request.png"
@@ -210,53 +278,107 @@ export default function InboxPage() {
                 <div className={styles.contentLayout}>
                     {/* Message List */}
                     <div className={styles.messageListContainer}>
-                        <div className={styles.messageList}>
-                            {filteredMessages.map(message => (
-                                <EmergencyMessageItem
-                                    key={message.id}
-                                    message={message}
-                                    isSelected={selectedMessages.includes(message.id)}
-                                    isActive={activeMessageId === message.id}
-                                    onSelect={handleSelectMessage}
-                                    onClick={handleMessageClick}
-                                />
-                            ))}
-                        </div>
+                        {filteredMessages.length === 0 ? (
+                            <div className={styles.emptyStateContainer}>
+                                <div className={styles.emptyStateContent}>
+                                    <Image
+                                        src="/assets/images/inbox.png"
+                                        alt="No messages"
+                                        width={120}
+                                        height={120}
+                                        className={styles.emptyStateIcon}
+                                    />
+                                    <h3 className={styles.emptyStateTitle}>No Completed Assignments</h3>
+                                    <p className={styles.emptyStateSubtitle}>Your completed assignments will appear here</p>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={styles.messageList}>
+                                    {activeTab === 'emergency' && filteredMessages.map(message => (
+                                        <EmergencyMessageItem
+                                            key={message.id}
+                                            message={message as EmergencyMessage}
+                                            isSelected={selectedMessages.includes(message.id)}
+                                            isActive={activeMessageId === message.id}
+                                            onSelect={handleSelectMessage}
+                                            onClick={handleMessageClick}
+                                        />
+                                    ))}
+                                    {activeTab === 'assignments' && filteredMessages.map(message => (
+                                        <AssignmentMessageItem
+                                            key={message.id}
+                                            message={message as AssignmentMessage}
+                                            isSelected={selectedMessages.includes(message.id)}
+                                            isActive={activeMessageId === message.id}
+                                            onSelect={handleSelectMessage}
+                                            onClick={handleMessageClick}
+                                        />
+                                    ))}
+                                    {activeTab === 'requests' && filteredMessages.map(message => (
+                                        <RequestMessageItem
+                                            key={message.id}
+                                            message={message as RequestMessage}
+                                            isSelected={selectedMessages.includes(message.id)}
+                                            isActive={activeMessageId === message.id}
+                                            onSelect={handleSelectMessage}
+                                            onClick={handleMessageClick}
+                                        />
+                                    ))}
+                                </div>
 
-                        {/* Pagination */}
-                        <div className={styles.pagination}>
-                            <button className={styles.paginationArrow}>
-                                <Image
-                                    src="/assets/images/back.png"
-                                    alt="Previous"
-                                    width={20}
-                                    height={20}
-                                />
-                            </button>
+                                {/* Pagination */}
+                                <div className={styles.pagination}>
+                                    <button className={styles.paginationArrow}>
+                                        <Image
+                                            src="/assets/images/back.png"
+                                            alt="Previous"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </button>
 
-                            <button className={styles.paginationNumberActive}>1</button>
+                                    <button className={styles.paginationNumberActive}>1</button>
 
-                            <button className={styles.paginationArrow}>
-                                <Image
-                                    src="/assets/images/bluenext.png"
-                                    alt="Next"
-                                    width={20}
-                                    height={20}
-                                />
-                            </button>
-                        </div>
+                                    <button className={styles.paginationArrow}>
+                                        <Image
+                                            src="/assets/images/bluenext.png"
+                                            alt="Next"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Message Detail Panel */}
                     <div className={styles.detailPanelContainer}>
-                        <MessageDetailPanel
-                            message={activeMessage}
-                            onMarkAsResolved={handleMarkAsResolved}
-                            onMarkAsUnresolved={handleMarkAsUnresolved}
-                        />
+                        {activeTab === 'emergency' && (
+                            <MessageDetailPanel
+                                message={activeMessage as EmergencyMessage | null}
+                                onMarkAsResolved={handleMarkAsResolved}
+                                onMarkAsUnresolved={handleMarkAsUnresolved}
+                            />
+                        )}
+                        {activeTab === 'assignments' && (
+                            <AssignmentDetailPanel
+                                message={activeMessage as AssignmentMessage | null}
+                                onMarkAsResolved={handleMarkAsResolved}
+                                onMarkAsUnresolved={handleMarkAsUnresolved}
+                            />
+                        )}
+                        {activeTab === 'requests' && (
+                            <RequestDetailPanel
+                                message={activeMessage as RequestMessage | null}
+                                onMarkAsResolved={handleMarkAsResolved}
+                                onMarkAsUnresolved={handleMarkAsUnresolved}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
